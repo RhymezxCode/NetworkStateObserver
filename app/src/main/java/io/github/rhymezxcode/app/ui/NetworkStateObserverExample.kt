@@ -21,6 +21,7 @@ class NetworkStateObserverExample : AppCompatActivity() {
         when(network.callNetworkConnection()){
             true -> showToast(this, "Network is restored")
             false -> showToast(this, "Network is lost")
+            else -> {}
         }
 
     }
