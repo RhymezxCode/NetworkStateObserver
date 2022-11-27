@@ -5,42 +5,42 @@ import androidx.lifecycle.LifecycleOwner
 
 class NetworkStateObserver(
     private val viewLifecycleOwner: LifecycleOwner?,
-    private val activity: Activity?
+    private val activity: Activity?,
+    reachUrl: String?,
+    serverUrl: String?
 ) {
     private lateinit var checkNetworkConnection: CheckNetworkConnection
-    private var reach = MyReachability("www.google.com", "www.github.com")
+    private var reach = Reachability(reachUrl ?: "www.google.com", serverUrl)
     private var context = activity?.applicationContext
-    private fun callNetworkConnection() {
+    fun callNetworkConnection(): Boolean {
         checkNetworkConnection = CheckNetworkConnection(activity?.application!!)
+        var state = false
         checkNetworkConnection.observe(viewLifecycleOwner!!) { isConnected ->
-            if (isConnected) {
-                val loader = Thread {
-                    when {
-                        reach.hasServerConnected(context!!) ->
-                            activity.runOnUiThread {
+            state = if (isConnected) {
+                when {
+                    reach.hasServerConnected(context!!) ->
+                        true
 
-                            }
+                    reach.hasInternetConnected(context!!) ->
+                        false
 
-                        reach.hasInternetConnected(context!!) ->
-                            activity.runOnUiThread {
-                                //check for weak connection
-                            }
-
-                        else -> activity.runOnUiThread {
-                            //check for lost connection
-                        }
-                    }
+                    else -> false
                 }
-                loader.start()
 
             } else {
                 //check for lost connection
+                false
             }
         }
-
+        return state
     }
 
-    private constructor(builder: Builder) : this(builder.viewLifecycleOwner, builder.activity)
+    private constructor(builder: Builder) : this(
+        builder.viewLifecycleOwner,
+        builder.activity,
+        builder.reachUrl,
+        builder.serverUrl
+    )
 
     class Builder {
         var viewLifecycleOwner: LifecycleOwner? = null
@@ -49,8 +49,20 @@ class NetworkStateObserver(
         var activity: Activity? = null
             private set
 
+        var reachUrl: String? = null
+            private set
+
+        var serverUrl: String? = null
+            private set
+
         fun lifecycleOwner(viewLifecycleOwner: LifecycleOwner) =
-            apply { this.viewLifecycleOwner = viewLifecycleOwner}
+            apply { this.viewLifecycleOwner = viewLifecycleOwner }
+
+        fun setServerURl(serverUrl: String) =
+            apply { this.serverUrl = serverUrl }
+
+        fun setReachURl(reachUrl: String) =
+            apply { this.reachUrl = reachUrl }
 
         fun activity(activity: Activity) = apply { this.activity = activity }
 
