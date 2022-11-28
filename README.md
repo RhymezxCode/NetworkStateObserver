@@ -61,15 +61,6 @@ A library that helps you check the state of your network, if it is either availa
             lifecycleScope.launch(Dispatchers.IO) {
                 if (isConnected) {
                     when {
-//                   Reachability.hasServerConnected(
-//                       context = this@NetworkStateObserverExample,
-//                       serverUrl = "https://www.github.com"
-//                   ) -> lifecycleScope.launchWhenStarted {
-//                       showToast(
-//                           this@NetworkStateObserverExample,
-//                           "Server url works"
-//                       )
-//                   }
 
                         Reachability.hasInternetConnected(
                             context = this@NetworkStateObserverExample
