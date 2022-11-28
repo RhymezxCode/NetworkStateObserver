@@ -10,7 +10,6 @@ import io.github.rhymezxcode.networkstateobserver.network.Reachability
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 class NetworkStateObserverExample : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +33,14 @@ class NetworkStateObserverExample : AppCompatActivity() {
                             )
                         }
 
-                        Reachability.hasInternetConnected(
-                            context = this@NetworkStateObserverExample
-                        ) -> lifecycleScope.launchWhenStarted {
-                            showToast(
-                                this@NetworkStateObserverExample,
-                                "Network restored"
-                            )
-                        }
+//                        Reachability.hasInternetConnected(
+//                            context = this@NetworkStateObserverExample
+//                        ) -> lifecycleScope.launchWhenStarted {
+//                            showToast(
+//                                this@NetworkStateObserverExample,
+//                                "Network restored"
+//                            )
+//                        }
 
                         else -> lifecycleScope.launchWhenStarted {
                             showToast(
