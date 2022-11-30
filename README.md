@@ -61,6 +61,17 @@ dependencies {
             .build()
 ```
 
+* If you just want to check for connectivity, before performing a task or job():
+
+```
+        if(CheckConnectivity.isNetworkAvailable(requireContext())){
+                         showToast(
+                                this@NetworkStateObserverExample,
+                                "Network restored"
+                            )
+        }
+```
+
 * Use the live-data method to determine your network state, and replace the code in the lifecycleScope.launchWhenStarted { ....your code here } to do what you want:
 
 ```
