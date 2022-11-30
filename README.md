@@ -25,7 +25,7 @@
 </div>
 <br />
 
-# NetworkStateObserver Android Library
+## NetworkStateObserver Android Library
 A library that helps you check the state of your network, if it is either available, lost, unavailable and also check the reach-ability of your network when your server is either down or your ISP is connected but no data subscription. 
 
 ## Adding NetworkStateObserver to your project
@@ -51,7 +51,7 @@ dependencies {
 
 #### Sync your project, and :scream: boom :fire: you have added NetworkStateObserver successfully. :exclamation:
 
-# Usage
+## Usage
 
 * First initialize the builder class:
 
@@ -150,7 +150,7 @@ dependencies {
     }
 ```
     
-# You can also inject NetworkStateObserver, and use it everywhere in your app with Hilt: :thumbsup:
+## You can also inject NetworkStateObserver, and use it everywhere in your app with Hilt: :thumbsup:
 
 * Create an object for the NetworkStateModule in your di package:
 
