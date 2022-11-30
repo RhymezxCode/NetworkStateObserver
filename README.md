@@ -19,14 +19,10 @@
 <a href="https://github.com/RhymezxCode/NetworkStateObserver/issues" target="blank">
     <img src="https://img.shields.io/github/issues/RhymezxCode/NetworkStateObserver" alt="NetworkStateObserver Android Library Issues"/>
 </a>
+<a href="https://github.com/RhymezxCode/NetworkStateObserver/commits?author=RhymezxCode" target="blank">
+    <img src="https://img.shields.io/github/last-commit/RhymezxCode/NetworkStateObserver" alt="NetworkStateObserver Android Library Issues"/>
+</a>
 </div>
-
-<div align="center">
-    <sub>Built with ❤︎ by
-        <a href="https://github.com/RhymezxCode">Awodire Babajide Samuel</a>
-    </sub>
-</div>
-
 <br />
 
 # NetworkStateObserver Android Library
@@ -34,7 +30,7 @@ A library that helps you check the state of your network, if it is either availa
 
 ## Adding NetworkStateObserver to your project
 
-Include jitpack in your root `settings.gradle` file.
+* Include jitpack in your root `settings.gradle` file.
 
 ```gradle
 pluginManagement {
@@ -45,7 +41,7 @@ pluginManagement {
 }
 ```
 
-And add it's dependency to your app level `build.gradle` file:
+* And add it's dependency to your app level `build.gradle` file:
 
 ```gradle
 dependencies {
@@ -53,18 +49,21 @@ dependencies {
 }
 ```
 
-Sync your project, and boom you have added NetworkStateObserver successfully.
-
+#### Sync your project, and :scream: boom :fire: you have added NetworkStateObserver successfully. :exclamation:
 
 # Usage
-# 1. first initialize the builder class:
 
+* First initialize the builder class:
+
+```
         val network = NetworkStateObserver.Builder()
             .activity(activity = this@NetworkStateObserverExample)
             .build()
+```
 
-# 2. use the live-data method to determine your network state, and replace the code in the lifecycleScope.launchWhenStarted { ....your code here } to do what you want:
+* Use the live-data method to determine your network state, and replace the code in the lifecycleScope.launchWhenStarted { ....your code here } to do what you want:
 
+```
         network.callNetworkConnection().observe(this) { isConnected ->
             lifecycleScope.launch(Dispatchers.IO) {
                 if (isConnected) {
@@ -109,9 +108,11 @@ Sync your project, and boom you have added NetworkStateObserver successfully.
 
         }
     }
+ ```
 
-# 3. you can check if your internet connection is stable only, if you don't have a server url: 
+* You can check if your internet connection is stable only, if you don't have a server url: 
 
+```
         network.callNetworkConnection().observe(this) { isConnected ->
             lifecycleScope.launch(Dispatchers.IO) {
                 if (isConnected) {
@@ -147,3 +148,93 @@ Sync your project, and boom you have added NetworkStateObserver successfully.
 
         }
     }
+```
+    
+# You can also inject NetworkStateObserver, and use it everywhere in your app with Hilt: :thumbsup:
+
+* Create an object for the NetworkStateModule in your di package:
+
+```
+@Module
+@InstallIn(ActivityComponent::class)
+object NetworkStateModule {
+    @Provides
+    fun provideNetworkStateObserver(
+        activity: Activity
+    ): NetworkStateObserver {
+        return NetworkStateObserver.Builder()
+            .activity(activity = activity)
+            .build()
+    }
+}
+```
+
+* Declare the variable in your class either a fragment or activity, it works in both:
+
+```
+@AndroidEntryPoint
+class myFragment : Fragment(){
+     @Inject
+     lateinit var network: NetworkStateObserver
+
+     private fun callNetworkConnection() {
+        network.callNetworkConnection().observe(this) { isConnected ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                if (isConnected) {
+                    when {
+                        Reachability.hasInternetConnected(
+                            context = this@NetworkStateObserverExample
+                        ) -> lifecycleScope.launchWhenStarted {
+                            showToast(
+                                this@NetworkStateObserverExample,
+                                "Network restored"
+                            )
+                        }
+
+                        else -> lifecycleScope.launchWhenStarted {
+                            showToast(
+                                this@NetworkStateObserverExample,
+                                "Network is lost or issues with server"
+                            )
+                        }
+                    }
+                } else {
+                    //check for lost connection
+                    lifecycleScope.launchWhenStarted {
+                        showToast(
+                            this@NetworkStateObserverExample,
+                            "No Network connection"
+                        )
+                    }
+                }
+
+            }
+
+        }
+    }
+    }
+
+ override fun onResume() {
+        super.onResume()
+        callNetworkConnection()
+    }
+    
+ }
+ ```
+
+* Add the method in onResume() of your fragment or activity to have a great experience:
+
+```
+    override fun onResume() {
+        super.onResume()
+        callNetworkConnection()
+    }
+```
+
+Please, feel free to give me a star :star2:, I also love sparkles :sparkles: :relaxed:
+<div align="center">
+    <sub>Developed with :sparkling_heart: by
+        <a href="https://github.com/RhymezxCode">Awodire Babajide Samuel</a>
+    </sub>
+</div>
+
