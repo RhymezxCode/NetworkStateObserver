@@ -62,7 +62,7 @@ dependencies {
 
 * First initialize the builder class:
 
-```
+```kt
         val network = NetworkStateObserver.Builder()
             .activity(activity = this@NetworkStateObserverExample)
             .build()
@@ -70,7 +70,7 @@ dependencies {
 
 * If you just want to check for connectivity, before performing a task or job():
 
-```
+```kt
         if(CheckConnectivity.isNetworkAvailable(requireContext())){
                          showToast(
                                 this@NetworkStateObserverExample,
@@ -81,7 +81,7 @@ dependencies {
 
 * Use the live-data method to determine your network state, and replace the code in the lifecycleScope.launchWhenStarted { ....your code here } to do what you want:
 
-```
+```kt
         network.callNetworkConnection().observe(this) { isConnected ->
             lifecycleScope.launch(Dispatchers.IO) {
                 if (isConnected) {
@@ -130,7 +130,7 @@ dependencies {
 
 * You can check if your internet connection is stable only, if you don't have a server url: 
 
-```
+```kt
         network.callNetworkConnection().observe(this) { isConnected ->
             lifecycleScope.launch(Dispatchers.IO) {
                 if (isConnected) {
@@ -172,7 +172,7 @@ dependencies {
 
 * Create an object for the NetworkStateModule in your di package:
 
-```
+```kt
 @Module
 @InstallIn(ActivityComponent::class)
 object NetworkStateModule {
@@ -189,7 +189,7 @@ object NetworkStateModule {
 
 * Declare the variable in your class either a fragment or activity, it works in both:
 
-```
+```kt
 @AndroidEntryPoint
 class myFragment : Fragment(){
      @Inject
@@ -242,7 +242,7 @@ class myFragment : Fragment(){
 
 * Add the method in onResume() of your fragment or activity to have a great experience:
 
-```
+```kt
     override fun onResume() {
         super.onResume()
         callNetworkConnection()
