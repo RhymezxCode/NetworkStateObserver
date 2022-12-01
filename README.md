@@ -8,7 +8,7 @@
     <img src="https://jitpack.io/v/RhymezxCode/NetworkStateObserver.svg" alt="NetworkStateObserver Android Library on jitpack.io" />
 </a>
 <a href="https://github.com/RhymezxCode/NetworkStateObserver/blob/main/LICENSE" target="blank">
-    <img src="https://img.shields.io/github/license/RhymezxCode/NetworkStateObserver" alt="NetworkStateObserver Android Library License" />
+    <img src="https://img.shields.io/github/license/RhymezxCode/NetworkStateObserver" alt="NetworkStateObserver Android Library License." />
 </a>
 <a href="https://github.com/RhymezxCode/NetworkStateObserver/stargazers" target="blank">
     <img src="https://img.shields.io/github/stars/RhymezxCode/NetworkStateObserver" alt="NetworkStateObserver Android Library Stars"/>
