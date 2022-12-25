@@ -46,6 +46,14 @@ pluginManagement {
         maven { url 'https://jitpack.io' }
     }
 }
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 
 * And add it's dependency to your app level `build.gradle` file:
