@@ -10,6 +10,10 @@ class NetworkStateObserver(
         return CheckNetworkConnection(activity?.application!!)
     }
 
+    fun callNetworkConnectionFlow(): CheckNetworkConnectionFlow{
+        return CheckNetworkConnectionFlow(activity?.application!!)
+    }
+
     private constructor(builder: Builder) : this(
         builder.activity
     )

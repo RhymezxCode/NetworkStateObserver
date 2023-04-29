@@ -1,6 +1,8 @@
 package io.github.rhymezxcode.app.ui
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import io.github.rhymezxcode.app.R
@@ -8,10 +10,13 @@ import io.github.rhymezxcode.app.util.showToast
 import io.github.rhymezxcode.networkstateobserver.network.NetworkStateObserver
 import io.github.rhymezxcode.networkstateobserver.network.Reachability
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 
 class NetworkStateObserverExample : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,6 +24,17 @@ class NetworkStateObserverExample : AppCompatActivity() {
         val network = NetworkStateObserver.Builder()
             .activity(activity = this@NetworkStateObserverExample)
             .build()
+
+        lifecycleScope.launch {
+            network.callNetworkConnectionFlow()
+                .observe()
+                .retryWhen { cause, _ ->
+                    cause is IOException
+                }
+                .collect {
+
+                }
+        }
 
         network.callNetworkConnection().observe(this) { isConnected ->
             lifecycleScope.launch(Dispatchers.IO) {
