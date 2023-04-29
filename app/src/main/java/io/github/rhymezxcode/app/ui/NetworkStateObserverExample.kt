@@ -12,15 +12,9 @@ import io.github.rhymezxcode.networkstateobserver.network.NetworkStateObserver
 import io.github.rhymezxcode.networkstateobserver.network.Reachability
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import java.util.concurrent.TimeoutException
-import javax.net.ssl.SSLHandshakeException
 
 
 class NetworkStateObserverExample : AppCompatActivity() {
