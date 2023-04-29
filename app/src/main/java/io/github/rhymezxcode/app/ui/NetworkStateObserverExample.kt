@@ -90,48 +90,48 @@ class NetworkStateObserverExample : AppCompatActivity() {
                 }
         }
 
-        network.callNetworkConnection().observe(this) { isConnected ->
-            lifecycleScope.launch(Dispatchers.IO) {
-                if (isConnected) {
-                    when {
-                        Reachability.hasServerConnected(
-                            context = this@NetworkStateObserverExample,
-                            serverUrl = "https://www.github.com"
-                        ) -> lifecycleScope.launchWhenStarted {
-                            showToast(
-                                this@NetworkStateObserverExample,
-                                "Server url works"
-                            )
-                        }
-
-                        Reachability.hasInternetConnected(
-                            context = this@NetworkStateObserverExample
-                        ) -> lifecycleScope.launchWhenStarted {
-                            showToast(
-                                this@NetworkStateObserverExample,
-                                "Network restored"
-                            )
-                        }
-
-                        else -> lifecycleScope.launchWhenStarted {
-                            showToast(
-                                this@NetworkStateObserverExample,
-                                "Network is lost or issues with server"
-                            )
-                        }
-                    }
-                } else {
-                    //check for lost connection
-                    lifecycleScope.launchWhenStarted {
-                        showToast(
-                            this@NetworkStateObserverExample,
-                            "No Network connection"
-                        )
-                    }
-                }
-
-            }
-        }
+//        network.callNetworkConnection().observe(this) { isConnected ->
+//            lifecycleScope.launch(Dispatchers.IO) {
+//                if (isConnected) {
+//                    when {
+//                        Reachability.hasServerConnected(
+//                            context = this@NetworkStateObserverExample,
+//                            serverUrl = "https://www.github.com"
+//                        ) -> lifecycleScope.launchWhenStarted {
+//                            showToast(
+//                                this@NetworkStateObserverExample,
+//                                "Server url works"
+//                            )
+//                        }
+//
+//                        Reachability.hasInternetConnected(
+//                            context = this@NetworkStateObserverExample
+//                        ) -> lifecycleScope.launchWhenStarted {
+//                            showToast(
+//                                this@NetworkStateObserverExample,
+//                                "Network restored"
+//                            )
+//                        }
+//
+//                        else -> lifecycleScope.launchWhenStarted {
+//                            showToast(
+//                                this@NetworkStateObserverExample,
+//                                "Network is lost or issues with server"
+//                            )
+//                        }
+//                    }
+//                } else {
+//                    //check for lost connection
+//                    lifecycleScope.launchWhenStarted {
+//                        showToast(
+//                            this@NetworkStateObserverExample,
+//                            "No Network connection"
+//                        )
+//                    }
+//                }
+//
+//            }
+//        }
     }
 
 
