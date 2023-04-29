@@ -57,12 +57,12 @@ dependencyResolutionManagement {
 
 ```gradle
 dependencies {
-    implementation 'com.github.RhymezxCode:NetworkStateObserver:1.0.1'
+    implementation 'com.github.RhymezxCode:NetworkStateObserver:1.1.0'
 
     //Livedata
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 }
 ```
@@ -137,6 +137,79 @@ dependencies {
 
         }
     }
+ ```
+ 
+ * Use the live-data method to determine your network state, and replace the code in the lifecycleScope.launchWhenStarted { ....your code here } to do what you want:
+
+```kt
+ lifecycleScope.launch {
+            network.callNetworkConnectionFlow()
+                .observe()
+                .retryWhen { cause, attempt ->
+                    if (cause is IOException && attempt < 3) {
+                        delay(2000)
+                        return@retryWhen true
+                    } else {
+                        return@retryWhen false
+                    }
+                }
+                .collect {
+                    when (it) {
+                        NetworkObserver.Status.Available -> {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                when {
+                                    Reachability.hasServerConnected(
+                                        context = this@NetworkStateObserverExample,
+                                        serverUrl = "https://www.github.com"
+                                    ) -> lifecycleScope.launch {
+                                        showToast(
+                                            this@NetworkStateObserverExample,
+                                            "Server url works"
+                                        )
+                                    }
+
+                                    Reachability.hasInternetConnected(
+                                        context = this@NetworkStateObserverExample
+                                    ) -> lifecycleScope.launch {
+                                        showToast(
+                                            this@NetworkStateObserverExample,
+                                            "Network restored"
+                                        )
+                                    }
+
+                                    else -> lifecycleScope.launch {
+                                        showToast(
+                                            this@NetworkStateObserverExample,
+                                            "Network is lost or issues with server"
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        NetworkObserver.Status.Unavailable -> {
+                            showToast(
+                                this@NetworkStateObserverExample,
+                                "Network is unavailable!"
+                            )
+                        }
+
+                        NetworkObserver.Status.Losing -> {
+                            showToast(
+                                this@NetworkStateObserverExample,
+                                "You are losing your network!"
+                            )
+                        }
+
+                        NetworkObserver.Status.Lost -> {
+                            showToast(
+                                this@NetworkStateObserverExample,
+                                "Network is lost!"
+                            )
+                        }
+                    }
+                }
+        }
  ```
 
 * You can check if your internet connection is stable only, if you don't have a server url: 
