@@ -139,7 +139,7 @@ dependencies {
     }
  ```
  
- * Use the live-data method to determine your network state, and replace the code in the lifecycleScope.launchWhenStarted { ....your code here } to do what you want:
+ * Use the flow method to determine your network state, and also retry when an exception is thrown:
 
 ```kt
  lifecycleScope.launch {
