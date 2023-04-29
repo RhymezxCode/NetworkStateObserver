@@ -11,10 +11,16 @@ import io.github.rhymezxcode.networkstateobserver.network.NetworkObserver
 import io.github.rhymezxcode.networkstateobserver.network.NetworkStateObserver
 import io.github.rhymezxcode.networkstateobserver.network.Reachability
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
+import javax.net.ssl.SSLHandshakeException
 
 
 class NetworkStateObserverExample : AppCompatActivity() {
@@ -30,56 +36,62 @@ class NetworkStateObserverExample : AppCompatActivity() {
         lifecycleScope.launch {
             network.callNetworkConnectionFlow()
                 .observe()
-                .retryWhen { cause, _ ->
-                    cause is IOException
+                .retryWhen { cause, attempt ->
+                    if (cause is IOException && attempt < 3) {
+                        delay(2000)
+                        return@retryWhen true
+                    } else {
+                        return@retryWhen false
+                    }
                 }
-                .collect{
-                    when(it){
+                .collect {
+                    when (it) {
                         NetworkObserver.Status.Available -> {
                             lifecycleScope.launch(Dispatchers.IO) {
-                                    when {
-                                        Reachability.hasServerConnected(
-                                            context = this@NetworkStateObserverExample,
-                                            serverUrl = "https://www.github.com"
-                                        ) -> lifecycleScope.launch{
-                                            showToast(
-                                                this@NetworkStateObserverExample,
-                                                "Server url works"
-                                            )
-                                        }
-
-                                        Reachability.hasInternetConnected(
-                                            context = this@NetworkStateObserverExample
-                                        ) -> lifecycleScope.launch {
-                                            showToast(
-                                                this@NetworkStateObserverExample,
-                                                "Network restored"
-                                            )
-                                        }
-
-                                        else -> lifecycleScope.launch{
-                                            showToast(
-                                                this@NetworkStateObserverExample,
-                                                "Network is lost or issues with server"
-                                            )
-                                        }
+                                when {
+                                    Reachability.hasServerConnected(
+                                        context = this@NetworkStateObserverExample,
+                                        serverUrl = "https://www.github.com"
+                                    ) -> lifecycleScope.launch {
+                                        showToast(
+                                            this@NetworkStateObserverExample,
+                                            "Server url works"
+                                        )
                                     }
 
+                                    Reachability.hasInternetConnected(
+                                        context = this@NetworkStateObserverExample
+                                    ) -> lifecycleScope.launch {
+                                        showToast(
+                                            this@NetworkStateObserverExample,
+                                            "Network restored"
+                                        )
+                                    }
 
+                                    else -> lifecycleScope.launch {
+                                        showToast(
+                                            this@NetworkStateObserverExample,
+                                            "Network is lost or issues with server"
+                                        )
+                                    }
+                                }
                             }
                         }
+
                         NetworkObserver.Status.Unavailable -> {
                             showToast(
                                 this@NetworkStateObserverExample,
                                 "Network is unavailable!"
                             )
                         }
+
                         NetworkObserver.Status.Losing -> {
                             showToast(
                                 this@NetworkStateObserverExample,
                                 "You are losing your network!"
                             )
                         }
+
                         NetworkObserver.Status.Lost -> {
                             showToast(
                                 this@NetworkStateObserverExample,
