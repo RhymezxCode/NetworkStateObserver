@@ -12,6 +12,10 @@ import io.github.rhymezxcode.networkstateobserver.network.NetworkStateObserver
 import io.github.rhymezxcode.networkstateobserver.network.Reachability
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -30,32 +34,38 @@ class NetworkStateObserverExample : AppCompatActivity() {
         lifecycleScope.launch {
             network.callNetworkConnectionFlow()
                 .observe()
-                .retryWhen { cause, attempt ->
-                    if (cause is IOException && attempt < 3) {
-                        delay(2000)
-                        return@retryWhen true
-                    } else {
-                        return@retryWhen false
-                    }
-                }
                 .collect {
                     when (it) {
                         NetworkObserver.Status.Available -> {
-                            lifecycleScope.launch(Dispatchers.IO) {
+                            lifecycleScope.launch {
                                 when {
-                                    Reachability.hasServerConnected(
+                                    Reachability.hasServerConnectedFlow(
                                         context = this@NetworkStateObserverExample,
                                         serverUrl = "https://www.github.com"
-                                    ) -> lifecycleScope.launch {
+                                    ).retryWhen { cause, attempt ->
+                                        if (cause is IOException && attempt < 3) {
+                                            delay(2000)
+                                            return@retryWhen true
+                                        } else {
+                                            return@retryWhen false
+                                        }
+                                    }.buffer().first() -> lifecycleScope.launch {
                                         showToast(
                                             this@NetworkStateObserverExample,
                                             "Server url works"
                                         )
                                     }
 
-                                    Reachability.hasInternetConnected(
+                                    Reachability.hasInternetConnectedFlow(
                                         context = this@NetworkStateObserverExample
-                                    ) -> lifecycleScope.launch {
+                                    ).retryWhen { cause, attempt ->
+                                        if (cause is IOException && attempt < 3) {
+                                            delay(2000)
+                                            return@retryWhen true
+                                        } else {
+                                            return@retryWhen false
+                                        }
+                                    }.buffer().first() -> lifecycleScope.launch {
                                         showToast(
                                             this@NetworkStateObserverExample,
                                             "Network restored"
