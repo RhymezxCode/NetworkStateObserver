@@ -57,7 +57,7 @@ dependencyResolutionManagement {
 
 ```gradle
 dependencies {
-    implementation 'com.github.RhymezxCode:NetworkStateObserver:1.1.0'
+    implementation 'com.github.RhymezxCode:NetworkStateObserver:1.1.1'
 
     //Livedata
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
