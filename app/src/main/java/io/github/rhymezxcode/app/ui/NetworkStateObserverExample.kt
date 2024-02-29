@@ -1,5 +1,6 @@
 package io.github.rhymezxcode.app.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -22,7 +23,7 @@ import java.io.IOException
 
 
 class NetworkStateObserverExample : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.N)
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,7 +52,6 @@ class NetworkStateObserverExample : AppCompatActivity() {
                                         }
                                     }.buffer().first() -> lifecycleScope.launch {
                                         showToast(
-                                            this@NetworkStateObserverExample,
                                             "Server url works"
                                         )
                                     }
@@ -67,14 +67,12 @@ class NetworkStateObserverExample : AppCompatActivity() {
                                         }
                                     }.buffer().first() -> lifecycleScope.launch {
                                         showToast(
-                                            this@NetworkStateObserverExample,
                                             "Network restored"
                                         )
                                     }
 
                                     else -> lifecycleScope.launch {
                                         showToast(
-                                            this@NetworkStateObserverExample,
                                             "Network is lost or issues with server"
                                         )
                                     }
@@ -84,21 +82,18 @@ class NetworkStateObserverExample : AppCompatActivity() {
 
                         NetworkObserver.Status.Unavailable -> {
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is unavailable!"
                             )
                         }
 
                         NetworkObserver.Status.Losing -> {
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "You are losing your network!"
                             )
                         }
 
                         NetworkObserver.Status.Lost -> {
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is lost!"
                             )
                         }
