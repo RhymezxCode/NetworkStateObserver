@@ -57,12 +57,12 @@ dependencyResolutionManagement {
 
 ```gradle
 dependencies {
-    implementation 'com.github.RhymezxCode:NetworkStateObserver:1.1.2'
+    implementation 'com.github.RhymezxCode:NetworkStateObserver:1.1.3'
 
     //Livedata
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 }
 ```
@@ -100,34 +100,30 @@ dependencies {
                         Reachability.hasServerConnected(
                             context = this@NetworkStateObserverExample,
                             serverUrl = "https://www.your-server-url.com"
-                        ) -> lifecycleScope.launchWhenStarted {
+                        ) -> lifecycleScope.launch{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Server url works"
                             )
                         }
 
                         Reachability.hasInternetConnected(
                             context = this@NetworkStateObserverExample
-                        ) -> lifecycleScope.launchWhenStarted {
+                        ) -> lifecycleScope.launch{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network restored"
                             )
                         }
 
-                        else -> lifecycleScope.launchWhenStarted {
+                        else -> lifecycleScope.launch{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is lost or issues with server"
                             )
                         }
                     }
                 } else {
                     //check for lost connection
-                    lifecycleScope.launchWhenStarted {
+                    lifecycleScope.launch{
                         showToast(
-                            this@NetworkStateObserverExample,
                             "No Network connection"
                         )
                     }
@@ -195,21 +191,18 @@ dependencies {
 
                         NetworkObserver.Status.Unavailable -> {
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is unavailable!"
                             )
                         }
 
                         NetworkObserver.Status.Losing -> {
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "You are losing your network!"
                             )
                         }
 
                         NetworkObserver.Status.Lost -> {
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is lost!"
                             )
                         }
@@ -228,25 +221,22 @@ dependencies {
 
                         Reachability.hasInternetConnected(
                             context = this@NetworkStateObserverExample
-                        ) -> lifecycleScope.launchWhenStarted {
+                        ) -> lifecycleScope.launchW{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network restored"
                             )
                         }
 
-                        else -> lifecycleScope.launchWhenStarted {
+                        else -> lifecycleScope.launch{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is lost or issues with server"
                             )
                         }
                     }
                 } else {
                     //check for lost connection
-                    lifecycleScope.launchWhenStarted {
+                    lifecycleScope.launch{
                         showToast(
-                            this@NetworkStateObserverExample,
                             "No Network connection"
                         )
                     }
@@ -292,25 +282,22 @@ class myFragment : Fragment(){
                     when {
                         Reachability.hasInternetConnected(
                             context = this@NetworkStateObserverExample
-                        ) -> lifecycleScope.launchWhenStarted {
+                        ) -> lifecycleScope.launch{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network restored"
                             )
                         }
 
-                        else -> lifecycleScope.launchWhenStarted {
+                        else -> lifecycleScope.launch{
                             showToast(
-                                this@NetworkStateObserverExample,
                                 "Network is lost or issues with server"
                             )
                         }
                     }
                 } else {
                     //check for lost connection
-                    lifecycleScope.launchWhenStarted {
+                    lifecycleScope.launch{
                         showToast(
-                            this@NetworkStateObserverExample,
                             "No Network connection"
                         )
                     }
