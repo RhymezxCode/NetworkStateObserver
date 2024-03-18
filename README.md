@@ -4,6 +4,9 @@
 <a href="https://android-arsenal.com/api?level=21" target="blank">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat" alt="NetworkStateObserver Android Library least API level" />
 </a>
+<a href="https://android-arsenal.com/details/1/8485" target="blank">
+    <img src="https://img.shields.io/badge/Android%20Arsenal-NetworkStateObserver-yellow.svg?style=flat" alt="NetworkStateObserver Android Library on Android-Arsenal" />
+</a>
 <a href="https://jitpack.io/#RhymezxCode/NetworkStateObserver" target="blank">
     <img src="https://jitpack.io/v/RhymezxCode/NetworkStateObserver.svg" alt="NetworkStateObserver Android Library on jitpack.io" />
 </a>
