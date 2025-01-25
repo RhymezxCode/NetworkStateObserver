@@ -30,9 +30,15 @@
 
 ## NetworkStateObserver Android Library
 A library that helps you check the state of your network, if it is either available, lost, unavailable and also check the reach-ability of your network when your server is either down or your ISP is connected but no data subscription. 
+## Guide:  
+
+**Dev.to:**  
+[Using NetworkStateObserver in Large Projects: A Comprehensive Guide](https://dev.to/rhymezxcode/using-networkstateobserver-in-large-projects-a-comprehensive-guide-3bo9)  
+<br />
+**Medium:**  
+[Using NetworkStateObserver in Large Projects: A Comprehensive Guide](https://rhymezxcode.medium.com/using-networkstateobserver-in-large-projects-a-comprehensive-guide-b41e61ab64dc)
 
 Demo:
-
 ![](Demo.gif)
 
 ### 1. Adding NetworkStateObserver to your project
